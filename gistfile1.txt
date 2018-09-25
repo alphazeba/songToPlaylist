@@ -1,0 +1,74 @@
+/**
+ * This is an example of a basic node.js script that performs
+ * the Client Credentials oAuth2 flow to authenticate against
+ * the Spotify Accounts.
+ *
+ * For more information, read
+ * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
+ */
+
+var request = require('request'); // "Request" library
+
+let artist = 'coldplay'
+
+let song = 'yellow'
+
+let url = 'https://www.googleapis.com/customsearch/v1?q=inurl%3Aplaylist+' +
+    artist +
+    '+' +
+    song +
+    '&key=AIzaSyCHGj8jZ-dfMhW-Azd-2929TiOdH1ED5Wk' +
+    '&cx=017283871425553781963:4-uvmf3bkzo'
+    // '&cx=017283871425553781963:4-uvmf3bkzo' +
+    // '&start=11'
+
+request(url, function (error, response, body) {
+
+  json = JSON.parse(body)
+
+  let playlist_ids = {}
+
+  json.items.forEach(function (thing) {
+    playlist_ids[thing.link] = (thing.link.substr(thing.link.lastIndexOf('/') + 1))
+  })
+
+  var client_id = 'b3ab593f67dc46c3ae8fe6ff67bf7938'; // Your client id
+  var client_secret = 'c0ee983f7212454e9f1a7ef61f72f91c'; // Your secret
+
+  // your application requests authorization
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+    },
+    form: {
+      grant_type: 'client_credentials'
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+
+      // use the access token to access the Spotify Web API
+      var token = body.access_token;
+
+      for (const link in playlist_ids) {
+        // console.log('access token: ', token);
+        var options = {
+          url: 'https://api.spotify.com/v1/playlists/' + playlist_ids[link],
+          headers: {
+            'Authorization': 'Bearer ' + token
+          },
+          json: true
+        };
+        request.get(options, function(error, response, body) {
+          console.log(link, body.followers.total);
+        });
+      }
+    } else {
+      console.log('error: ', error, response, body);
+    }
+  });
+
+});
