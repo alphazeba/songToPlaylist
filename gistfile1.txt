@@ -32,8 +32,8 @@ request(url, function (error, response, body) {
     playlist_ids[thing.link] = (thing.link.substr(thing.link.lastIndexOf('/') + 1))
   })
 
-  var client_id = 'b3ab593f67dc46c3ae8fe6ff67bf7938'; // Your client id
-  var client_secret = 'c0ee983f7212454e9f1a7ef61f72f91c'; // Your secret
+  var client_id = 'YOUR_CLIENT_ID'; // Your client id
+  var client_secret = 'YOUR_CLIENT_SECRET'; // Your secret
 
   // your application requests authorization
   var authOptions = {
