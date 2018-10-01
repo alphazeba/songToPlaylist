@@ -12,7 +12,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "test"
+    "test": "test",
+	"start": "node ./songToPlaylist.js"
   },
   "repository": {
     "type": "git",
