@@ -1,0 +1,22 @@
+
+
+<html>
+	<head>
+		<link rel='stylesheet' href='/assets/style.css'>
+		<title>Song To Playlist</title>
+		<script src='/socket.io/socket.io.js'></script>
+	</head>
+	<body>
+		<h1>song to playlist</h1>
+		<div>
+			<form id='submit'>
+				<input id='inputTitle' placeholder='title'></input>
+				<input id='inputArtist' placeholder='artist'></input>
+				<button>search</button>
+			</form>
+			<ol id='output'>
+			</ol>
+		</div>
+	</body>
+	<script src='/client.js'></script>
+</html>
